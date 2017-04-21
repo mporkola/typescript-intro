@@ -1,50 +1,251 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+	<title>reveal.js</title>
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
 
-		<script>
-			// More info https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				history: true,
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				Trying out <br><strong style="font-size: 200%;">Typescript</strong><br>why and how
+			</section>
+			<section>
+      	<h3>What is Typescript?</h3>
+      	<ul>
+      		<li>Superset of ES6</li>
+      		<li>Optional type annotations
+					  <ul>
+      		    <li>generics</li>
+      		    <li>interfaces/structs</li>
+      		    <li>type inference</li>
+							<li>nullability</li>
+						</ul>
+					</li>
+      		<li>Compile time type checking</li>
+					<li>Transpiler targeting ES3 – ESNext</li>
+      	</ul>
+				<aside class="notes">
+        	Sueprset of ES6, so it doesn't try to change the underlying language but just add types on it.
+					Compile time checking, so you'll see the errors straight away in your editor, but it doesn't help with weird stuff coming from server.
+					Implemented as a transpiler, eating Typescript and ...excreting anything from ES3 to latest supported ES stages.
+        </aside>
+      </section>
+			<section>
+				<h3>Why?</h3>
+				<ul>
+					<li>Offload more error checking to your tools</li>
+					<li>Explicit & simultaneous data documentation</li>
+					<li>Editor/IDE integration</li>
+				</ul>
+				<p>➡ easier to maintain and less to remember</p>
+				<aside class="notes">
+					Types give more information to your tools, so they can do more static analysis and spot errors, takes mental load off.
+					Standardised way to document function signatures and data etc
+					which is also machine readable, so your IDE can help the way it should
+				</aside>
+			</section>
+      <section>
+      	<h3>Typescript vs Flow</h3>
+				<table>
+					<tr><th>Typescript</th><th>Flow</th></tr>
+					<tr><td>Microsoft</td><td>Facebook</td></tr>
+					<tr><td>Tooling</td><td>Fancier type system</td></tr>
+					<tr><td>Compiler</td><td>Checker</td></tr>
+					<tr><td>Plenty of lib support</td><td>Less plenty</td></tr>
+					<tr><td>VS Code</td><td>Atom/Nuclide</td></tr>
+					<tr><td>✨Google approved✨</td><td>💩</td></tr>
+				</table>
+				<aside class="notes">In the end, both good tools, but I'd bet on Typescript</aside>
+      </section>
+			<section>
+				<h1>examples</h1>
+				<iframe src="https://giphy.com/embed/VHHxxFAeLaYzS" width="480" height="269.6746203904555" frameBorder="0" class="giphy-embed"
+ allowFullScreen></iframe>
+			</section>
+			<section>
+				<h3>type annotations</h3>
+				<img src="./images/annotation.png" />
+				<pre><code style="font-size: 0.8em">
+ERROR in ./src/modules/venue/selectors.ts
+(9,1): error TS2322: Type '1000' is not assignable to type 'string'.
+				</code></pre>
+			</section>
+      <section>
+      	<h3>type annotations</h3>
+				<img style="max-height: 450px;" src="./images/venue-annotation.png" />
+      	<small>works nice for documenting backend responses</small>
+				<!--<pre><code style="font-size: 0.8em">
+export interface Venue {
+  description: Localized;
+  name: Localized;
+  short_description: Localized;
+  website: string;
+  id: mongoId;
+  currency: Currency;
 
-				// More info https://github.com/hakimel/reveal.js#dependencies
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+  // address
+  address: string;
+  post_code: string;
+  city: string;
+  country: Country;
+
+  timezone: string;
+  location: GeoJSONPoint;
+  preorder_only: boolean;
+  merchant: mongoId;
+  tags: Array<Tag>;
+  rush: {
+    status: boolean;
+    queue_minutes: number;
+  };
+  phone: string;
+  customer_support_phone: string;
+  slug: string;
+  notes: string;
+  listimage: string;
+  always_available: boolean;
+  public_visible: boolean;
+
+  opening_times: OpeningTimes;
+  preorder_times: {
+    delivery: OpeningTimes;
+    eatin: OpeningTimes;
+    takeaway: OpeningTimes;
+    minimum_time_limit: number;
+    maximum_days: number;
+    time_step: number;
+  };
+};
+      	</code></pre>-->
+      </section>
+			<section>
+				<h3>inferred types</h3>
+				<img src="./images/inferred.png" />
+			</section>
+			<section>
+				<h3>parameter types</h3>
+				<img src="./images/parameter.png" />
+				<aside class="notes">a great example of in-editor documentation</aside>
+			</section>
+			<section>
+				<h3>I'm in! How?</h3>
+				<!--<iframe src="https://giphy.com/embed/fsoCk5kgOcYMM" width="480" height="255" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>-->
+			</section>
+			<section>
+				<p>Javascript is already valid Typescript!</p>
+				<code>mv code.js code.ts</code>
+				<p>&nbsp;</p>
+				<h3>😎</h3>
+				<p class="fragment" style='font-size: 0.7em'>ok that actually doesn't do much</p>
+				<p class="fragment" style='font-size: 0.7em'>except editor support</p>
+				<aside class="notes">It's a superset of ES6, so valid ES6 is valid Typescript</aside>
+			</section>
+			<section>
+				<code><pre> > yarn add -D typescript ts-loader</pre></code>
+				<img src="./images/ts-diff.png" />
+				<!--<code><pre>
+ resolve: {
+- extensions: ['.js', '.jsx', '.json'],
++ extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
+, modules: [
+
+	 ...
+
++{
++ test: /\.tsx?$/,
++ use: ['babel-loader', 'ts-loader'],
++ exclude: /node_modules/
++},
+				</pre></code>-->
+			</section>
+			<section>
+			  <h3>Where should I start?</h3>
+				<ul>
+					<li class="fragment">It's easiest to add types to code with few references to external code, such as utils or reducers</li>
+					<li class="fragment">Types bring most benefits when applied to complex data types or convoluted data flow</li>
+					<li class="fragment">Also, functions that are accessed from many places</li>
+				</ul>
+        <aside class="notes">In my case I started from time handling utilities, which had complex data objects and plenty of manipulation logic</aside>
+      </section>
+			<section>
+      	<h3>Caveats! Library support</h3>
+				<ul>
+      	<li>For 100% functionality, needs first party support from libraries</li>
+				<li class="fragment">Third party typings available from Definitely Typed project 💕</li>
+				<li class="fragment">Worst case, write type declarations yourself</li>
+				<li class="fragment">mega-worst case, <code>declare module 'foo';</code> and <code>any</code> type</li>
+				</ul>
+				<aside class="notes">
+					e.g. Redux has 1st party types.
+					Definitely typed = comprehensive.
+					And if you really can't be bothered, you can just tell the compiler to let go of types completely</aside>
+      </section>
+			<section>
+				<h3>Caveats! Tool support</h3>
+				<p>Typescript is a different superset of ES6 than Babel:</p>
+				<img style="max-height: 450px;" src="./images/es-venn.png" />
+        <aside class="notes">Some features supported by Babel (re-export shortcut) and ES tools (prettier), you might have to wait a while</aside>
+			</section>
+			<section>
+				<h3>Caveats!</h3>
+				<p>Not compatible with React proptypes<br>➡ double declarations or no runtime type checking</p>
+        <aside class="notes">React made by facebook, and flow is made by facebook, not much help there. Great 3rd party support though</aside>
+			</section>
+			<section>
+				<h3>Summary</h3>
+				<ul>
+					<li>Detect bugs early & programmatically</li>
+					<li>Static types are good for documentation and maintainability</li>
+					<li>You can try it out without fully committing</li>
+				</ul>
+			</section>
+			<section>
+				<h2>Verdict?</h2>
+				<p class="fragment">✅ strongly recommended</p>
+				<img class="fragment" src="https://media.giphy.com/media/111ebonMs90YLu/giphy.gif"/>
+			</section>
+    </div>
+  </div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info https://github.com/hakimel/reveal.js#configuration
+		Reveal.initialize({
+			history: true,
+			parallaxBackgroundImage: './images/mario-1-1.png',
+			parallaxBackgroundSize: '13536px 896px',
+
+			// More info https://github.com/hakimel/reveal.js#dependencies
+			dependencies: [
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+	</script>
+</body>
+
 </html>
